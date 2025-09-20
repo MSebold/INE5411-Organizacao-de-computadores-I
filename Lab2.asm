@@ -1,7 +1,6 @@
 .data
 	var_a: .asciiz "Qual o nome do aquivo .txt que deseja salvar: "
 	name: .space 15 # Aloca 15 bytes para o nome do .txt
-	
 matriz_a:
 	.word 1,2,3,0,1,4,0,0,1
 matriz_b:
@@ -10,23 +9,42 @@ matriz_c:
 	.word 0,0,0,0,0,0,0,0,0
 
 .text
+
 main:
-	# Chama PROC_NOME
-	jal	PROC_NOME
+	la	$s0, matriz_a
+	la	$s1, matriz_b
+	la	$s2, matriz_c
 
 	# Chama PROC_MUL
-	la	$a0, matriz_a
-	la	$a1, matriz_b
+	la	$a0, matriz_b
+	la	$a1, matriz_a
 	la	$a2, matriz_c	
 	jal	PROC_MUL
 	
-	j main
+	# Chama PROC_NOME
+	jal	PROC_NOME
+	
+	j exit
 PROC_MUL:
 
-	# Realiza a transposição da matriz_b
-	la	$a0, # Você estava aq!! ==================================
-	jal	PROC_TRANS
+	# Chama a função de transposição	
+	# Faz o push da pilha
+	# ===================
+	addi	$sp, $sp, -4
+	sw	$ra, 0($sp)
+	# ===================
+	jal 	PROC_TRANS
 	
+	# Faz o pop da pilha
+	# ===================
+	lw	$ra, 0($sp)
+	# ===================
+	
+	
+	# Inverte a ordem das matrizes em $a0/$a1
+	la	$t0, ($a0)
+	la	$a0, ($a1)
+	la	$a1, ($t0)
 
 	# for i in range(3):
 	#     for j in range(3):
@@ -108,7 +126,32 @@ fim_loop_j:
 	bne	$t0, 3, salto_i
 	# ===============================
 fim_loop_i:
+	jr	$ra
 	
+PROC_TRANS:
+	la 	$t0, ($a0)
+	addi 	$t1, $t0, 4
+	addi 	$t2, $t0, 12
+	lw 	$t1, 0($t1)
+	lw 	$t2, 0($t2)
+	sw 	$t2, 4($a0)
+	sw 	$t1, 12($a0)
+	la 	$t0, ($a0)
+	addi 	$t1, $t0, 8
+	addi 	$t2, $t0, 24
+	lw 	$t1, 0($t1)
+	lw 	$t2, 0($t2)
+	sw 	$t2, 8($a0)
+	sw 	$t1, 24($a0)
+	la 	$t0, ($a0)
+	addi 	$t1, $t0, 20
+	addi 	$t2, $t0, 28
+	lw 	$t1, 0($t1)
+	lw 	$t2, 0($t2)
+	sw 	$t2, 20($a0)
+	sw 	$t1, 28($a0)
+
+	jr	$ra
 
 PROC_NOME:
 	# Ler os valores dados pelo usuario
@@ -123,34 +166,6 @@ PROC_NOME:
     	syscall
     	
     	jr	$ra
-
-PROC_TRANS:
-	la 	$t0, matriz_b
-	addi 	$t1, $t0, 4
-	addi 	$t2, $t0, 12
-
-	lw 	$t1, 0($t1)
-	lw 	$t2, 0($t2)
-
-	sw 	$t2, matriz_b + 4
-	sw 	$t1, matriz_b + 12
-
-	la 	$t0, matriz_b
-	addi 	$t1, $t0, 8
-	addi 	$t2, $t0, 24
-
-	lw 	$t1, 0($t1)
-	lw 	$t2, 0($t2)
-
-	sw 	$t2, matriz_b + 8
-	sw 	$t1, matriz_b + 24
-
-	la 	$t0, matriz_b
-	addi 	$t1, $t0, 20
-	addi 	$t2, $t0, 28
-
-	lw 	$t1, 0($t1)
-	lw 	$t2, 0($t2)
-
-	sw 	$t2, matriz_b + 20
-	sw 	$t1, matriz_b + 28
+exit:
+	li	$v0, 10
+	syscall
