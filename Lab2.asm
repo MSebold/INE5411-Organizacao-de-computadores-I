@@ -25,6 +25,7 @@ main:
 	jal	PROC_NOME
 	
 	j exit
+
 PROC_MUL:
 
 	# Chama a função de transposição	
