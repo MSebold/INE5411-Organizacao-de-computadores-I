@@ -8,8 +8,9 @@ main:
 	
 	li	$v0, 3
 	syscall
-	j end
 	
+	li	$v0, 10
+	syscall	
 square_root:
 
 	li	$t0, 1
