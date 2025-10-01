@@ -19,7 +19,10 @@ main:
 
     ldc1    $f12, zero_d
     mov.d   $f14, $f0
-    
+    jal     calcular
+    j	    exit
+
+calcular:
     # Pré-calcular -x^2
     mul.d   $f16, $f0, $f0
     ldc1    $f28, neg_one_d
@@ -30,7 +33,7 @@ main:
     li      $t2, 20
 
 loop_start:
-    bge     $t0, $t2, exit
+    bge     $t0, $t2, exit_main
 
     add.d   $f12, $f12, $f14    # sum = sum + term
 
@@ -51,9 +54,10 @@ loop_start:
     li      $v0, 4
     la      $a0, newline
     syscall
+    # Fim da demonstração da convergência
 
     addiu   $t0, $t0, 1
-    
+
     sll     $t4, $t0, 1         
     addiu   $t5, $t4, 1
     mul     $t6, $t4, $t5
@@ -66,6 +70,9 @@ loop_start:
     mul.d   $f14, $f14, $f22
     
     j       loop_start
+    
+exit_main:
+	jr  $ra
 
 exit:
     li      $v0, 10
