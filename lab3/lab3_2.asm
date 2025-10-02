@@ -1,6 +1,5 @@
 .data
     prompt_x:       .asciiz "Digite o valor de x (em radianos): "
-    result_msg:     .asciiz "\nSeno aproximado (20 termos): "
     intermediate_msg: .asciiz "Soma apos termo "
     colon_space:    .asciiz ": "
     newline:        .asciiz "\n"
