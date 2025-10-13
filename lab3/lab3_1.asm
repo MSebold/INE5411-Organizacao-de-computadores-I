@@ -1,7 +1,7 @@
 .data
     prompt_x:       .asciiz "Digite o numero (x) para calcular a raiz quadrada: "
     prompt_n:       .asciiz "Digite o numero de iteracoes (n, ex: 5 a 20): "
-    result_msg:     .asciiz "\n--- Resultados ---\n"
+    result_msg:     .asciiz "\n--------- Resultados ---------\n"
     my_result_label:.asciiz "Raiz calculada (Newton, n="
     hw_result_label:.asciiz "Raiz calculada (Hardware sqrt.d): "
     error_label:    .asciiz "Erro absoluto: "
