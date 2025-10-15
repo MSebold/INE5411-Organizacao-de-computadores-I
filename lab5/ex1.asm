@@ -12,17 +12,16 @@ main:
 	li $v0, 5
 	syscall
 	
-	move $s0, $v0 # store limit in $s0
+	move $s0, $v0          # guarda o limite
 	
-	li $t0, 0 # initialize the counter
+	li $t0, 0              # contador inicia em 0
 	
 loop:
-	bge $t0, $s0, exit
-	andi $t1, $t0, 1
+	bge $t0, $s0, exit     # fim quando contador >= limite
+	andi $t1, $t0, 1       # testa se é ímpar
 	beqz $t1, is_odd
 	
 	addi $t0, $t0, 1
-	
 	j loop
 
 is_odd:
@@ -39,11 +38,8 @@ is_odd:
 	syscall
 	
 	addi $t0, $t0, 1
-	
 	j loop
 	
 exit:
-	li $v0, 10
+	li $v0, 10             # encerra o programa
 	syscall
-	
-	
