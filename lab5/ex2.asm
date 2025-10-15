@@ -14,14 +14,14 @@ main:
 	
 	li $v0, 5
 	syscall
-	move $s0, $v0
+	move $s0, $v0          # tamanho do vetor
 	
 	li $t0, 4
 	mul $a0, $s0, $t0
 	li $v0, 9
 	syscall
-	move $s1, $v0
-	move $s7, $v0
+	move $s1, $v0          # ponteiro do vetor
+	move $s7, $v0          # salva endereço inicial
 	
 	li $v0, 4
 	la $a0, text_2
@@ -37,7 +37,7 @@ main:
 	
 	li $t1, 0
 loop_fill:
-	bge $t1, $s0, exit_fill
+	bge $t1, $s0, exit_fill # fim da leitura do vetor
 	
 	li $v0, 5
 	syscall
@@ -58,25 +58,24 @@ exit_fill:
 	li $v0, 5
 	syscall
 	
-	move $s2, $v0
+	move $s2, $v0          # número a procurar
 	
-	li $t0, 0 # found = 0
+	li $t0, 0              # flag found = 0
+	li $t1, 0
 	
-	li 	$t1, 0
 	
+loop_search:
+	addi $t2, $s7, 0
+	mul $t3, $t1, 4
+	add $t2, $s7, $t3
+	lw $t2, 0($t2)
 	
-loop_search: # it is necessary to finish this procedure
-	addi	$t2, $s7, 0
-	mul	$t3, $t1, 4
-	add	$t2, $s7, $t3
-	lw	$t2, 0($t2)
-	
-	bne	$t2, $s2, end_if
-	li	$t0, 1
-	j 	exit_search
+	bne $t2, $s2, end_if
+	li $t0, 1              # número encontrado
+	j exit_search
 end_if:
-	addi	$t1, $t1, 1
-	beq 	$t1, $s0, exit_search
+	addi $t1, $t1, 1
+	beq $t1, $s0, exit_search
 	j loop_search
 	
 exit_search:
@@ -98,5 +97,5 @@ found:
 	j exit
 	
 exit:
-	li $v0, 10
+	li $v0, 10             # encerra o programa
 	syscall
