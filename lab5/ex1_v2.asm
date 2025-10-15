@@ -12,12 +12,12 @@ main:
 	li $v0, 5
 	syscall
 	
-	move $s0, $v0 # store limit in $s0
+	move $s0, $v0          # guarda o limite
 	
-	li $t0, 0 # initialize the counter
+	li $t0, 0              # contador inicia em 0
 	
 loop:
-	bge $t0, $s0, exit
+	bge $t0, $s0, exit     # fim quando contador >= limite
 		
 	li $v0, 4
 	la $a0, text_2
@@ -31,10 +31,10 @@ loop:
 	la $a0, new_line
 	syscall
 	
-	addi $t0, $t0, 2
+	addi $t0, $t0, 2       # incrementa de 2 em 2
 	
 	j loop
 	
 exit:
-	li $v0, 10
+	li $v0, 10             # encerra o programa
 	syscall
